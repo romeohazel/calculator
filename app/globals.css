@@ -5,8 +5,7 @@
 }
 
 :root {
-  --bg-deep: #050508;
-  --bg-mid: #0c0a14;
+  --bg-deep: #000000;
   --accent: #7c5cff;
   --accent-hot: #ff4ecd;
   --accent-cool: #00e5c7;
@@ -22,16 +21,8 @@ body {
   margin: 0;
   min-height: 100%;
   font-family: var(--font-sans);
-  background: var(--bg-deep);
+  background: #000000;
   color: var(--text);
-}
-
-body {
-  background:
-    radial-gradient(ellipse 80% 50% at 20% -10%, rgba(124, 92, 255, 0.35), transparent),
-    radial-gradient(ellipse 60% 40% at 90% 10%, rgba(255, 78, 205, 0.2), transparent),
-    radial-gradient(ellipse 50% 50% at 50% 100%, rgba(0, 229, 199, 0.12), transparent),
-    var(--bg-deep);
 }
 
 button {
@@ -48,43 +39,6 @@ input {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2.5rem 1.5rem;
-  position: relative;
-  overflow: hidden;
-}
-
-.page::before {
-  content: "";
-  position: absolute;
-  width: 480px;
-  height: 480px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(124, 92, 255, 0.15) 0%, transparent 70%);
-  top: 10%;
-  left: -10%;
-  animation: drift 18s ease-in-out infinite;
-  pointer-events: none;
-}
-
-.page::after {
-  content: "";
-  position: absolute;
-  width: 360px;
-  height: 360px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 229, 199, 0.1) 0%, transparent 70%);
-  bottom: 5%;
-  right: -5%;
-  animation: drift 22s ease-in-out infinite reverse;
-  pointer-events: none;
-}
-
-@keyframes drift {
-  0%,
-  100% {
-    transform: translate(0, 0) scale(1);
-  }
-  50% {
-    transform: translate(30px, -20px) scale(1.08);
-  }
+  padding: 2rem 1.5rem;
+  background: #000000;
 }
