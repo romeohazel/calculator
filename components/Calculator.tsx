@@ -100,27 +100,9 @@ export function Calculator() {
   return (
     <div className={styles.shell}>
       <div className={styles.glow} aria-hidden />
-      <header className={styles.brand}>
-        <div className={styles.logo}>
-          <span className={styles.logoMark}>∑</span>
-          <span className={styles.logoText}>Calc</span>
-        </div>
-        {hasAccess ? (
-          <span className={styles.paid}>
-            <span className={styles.paidDot} />
-            Unlocked
-          </span>
-        ) : (
-          <span className={styles.locked}>Pay to solve</span>
-        )}
-      </header>
-
       <div
         className={`${styles.displayPanel} ${pulse ? styles.displayPulse : ""} ${!hasAccess ? styles.displayLocked : ""}`}
       >
-        <p className={styles.displayHint}>
-          {hasAccess ? "Premium answers enabled" : "Answers require subscription"}
-        </p>
         <div className={styles.display} aria-live="polite">
           {display}
         </div>
