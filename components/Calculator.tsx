@@ -139,7 +139,6 @@ export function Calculator() {
   return (
     <>
       <div className={styles.shell}>
-        <div className={styles.glow} aria-hidden />
         <div
           className={`${styles.displayPanel} ${pulse ? styles.displayPulse : ""} ${!hasAccess ? styles.displayLocked : ""}`}
         >
