@@ -1,38 +1,57 @@
 import { cookies } from "next/headers";
 import { createHmac, timingSafeEqual } from "crypto";
+import { customerHasPaidAccess } from "@/lib/stripe-access";
 
-const COOKIE_NAME = "calc_access";
+const COOKIE_NAME = "calc_customer";
 
 function secret(): string {
   return process.env.ACCESS_COOKIE_SECRET ?? "dev-secret-change-in-production";
 }
 
-export function signAccessToken(): string {
-  const payload = `granted:${Date.now()}`;
-  const sig = createHmac("sha256", secret()).update(payload).digest("hex");
-  return `${payload}.${sig}`;
+function sign(customerId: string): string {
+  const sig = createHmac("sha256", secret()).update(customerId).digest("hex");
+  return `${customerId}.${sig}`;
 }
 
-export function verifyAccessToken(token: string | undefined): boolean {
-  if (!token) return false;
+export function parseCustomerCookie(token: string | undefined): string | null {
+  if (!token) return null;
   const lastDot = token.lastIndexOf(".");
-  if (lastDot === -1) return false;
-  const payload = token.slice(0, lastDot);
+  if (lastDot === -1) return null;
+  const customerId = token.slice(0, lastDot);
   const sig = token.slice(lastDot + 1);
-  const expected = createHmac("sha256", secret()).update(payload).digest("hex");
+  if (!customerId.startsWith("cus_")) return null;
+
+  const expected = createHmac("sha256", secret()).update(customerId).digest("hex");
   try {
     const a = Buffer.from(sig, "hex");
     const b = Buffer.from(expected, "hex");
-    if (a.length !== b.length) return false;
-    return timingSafeEqual(a, b) && payload.startsWith("granted:");
+    if (a.length !== b.length) return null;
+    if (!timingSafeEqual(a, b)) return null;
+    return customerId;
+  } catch {
+    return null;
+  }
+}
+
+export async function getCustomerId(): Promise<string | null> {
+  const store = await cookies();
+  return parseCustomerCookie(store.get(COOKIE_NAME)?.value);
+}
+
+/** Checks Stripe on every call — subscription cancel removes access; lifetime persists. */
+export async function hasAccess(): Promise<boolean> {
+  const customerId = await getCustomerId();
+  if (!customerId) return false;
+
+  try {
+    return await customerHasPaidAccess(customerId);
   } catch {
     return false;
   }
 }
 
-export async function hasAccess(): Promise<boolean> {
-  const store = await cookies();
-  return verifyAccessToken(store.get(COOKIE_NAME)?.value);
+export function customerCookieValue(customerId: string): string {
+  return sign(customerId);
 }
 
 export function accessCookieOptions() {
@@ -42,6 +61,6 @@ export function accessCookieOptions() {
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax" as const,
     path: "/",
-    maxAge: 60 * 60 * 24 * 365 * 10,
+    maxAge: 60 * 60 * 24 * 30,
   };
 }

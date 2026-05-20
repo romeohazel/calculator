@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getStripe } from "@/lib/stripe";
-import { accessCookieOptions, signAccessToken } from "@/lib/access";
 import Stripe from "stripe";
 
 export async function POST(req: NextRequest) {
@@ -19,20 +18,20 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
 
-  if (
-    event.type === "checkout.session.completed" ||
-    event.type === "invoice.paid"
-  ) {
-    const res = NextResponse.json({ received: true });
-    const opts = accessCookieOptions();
-    res.cookies.set(opts.name, signAccessToken(), {
-      httpOnly: opts.httpOnly,
-      secure: opts.secure,
-      sameSite: opts.sameSite,
-      path: opts.path,
-      maxAge: opts.maxAge,
-    });
-    return res;
+  const stripe = getStripe();
+
+  if (event.type === "checkout.session.completed") {
+    const session = event.data.object as Stripe.Checkout.Session;
+    const customerId =
+      typeof session.customer === "string"
+        ? session.customer
+        : session.customer?.id;
+
+    if (customerId && session.mode === "payment") {
+      await stripe.customers.update(customerId, {
+        metadata: { lifetime_access: "true" },
+      });
+    }
   }
 
   return NextResponse.json({ received: true });

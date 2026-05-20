@@ -30,6 +30,8 @@ export async function POST(req: NextRequest) {
       line_items: [{ price: priceId, quantity: 1 }],
       success_url: `${base}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: base,
+      customer_creation: plan === "lifetime" ? "always" : undefined,
+      metadata: { plan },
     });
 
     return NextResponse.json({ url: session.url });

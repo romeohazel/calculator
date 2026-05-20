@@ -60,12 +60,14 @@ export function Calculator() {
         const data = await res.json();
 
         if (data.requiresPayment) {
+          setHasAccess(false);
           setShowPricing(true);
           return;
         }
 
         if (data.result !== undefined) {
           setDisplay(data.result);
+          setHasAccess(true);
           return;
         }
 
