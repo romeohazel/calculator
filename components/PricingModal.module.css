@@ -94,6 +94,15 @@
   box-shadow: 0 4px 12px rgba(124, 92, 255, 0.4);
 }
 
+.promo {
+  margin: 0 0 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #fbbf24;
+  line-height: 1.4;
+  opacity: 0.95;
+}
+
 .price {
   margin: 0 0 0.35rem;
   font-size: 1.75rem;

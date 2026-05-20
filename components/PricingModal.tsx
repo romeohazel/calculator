@@ -50,6 +50,9 @@ export function PricingModal({ onClose }: Props) {
           <article className={`${styles.plan} ${styles.featured}`}>
             <span className={styles.badge}>Best value</span>
             <h3>Lifetime</h3>
+            <p className={styles.promo}>
+              Limited time: 900% off — was $2,990, now $299
+            </p>
             <p className={styles.price}>
               $299 <span>one-time</span>
             </p>

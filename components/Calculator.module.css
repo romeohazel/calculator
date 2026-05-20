@@ -102,6 +102,42 @@
   background-clip: text;
 }
 
+.displayHidden {
+  visibility: hidden;
+}
+
+.loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1.25rem 1.35rem;
+  z-index: 2;
+}
+
+.loadingText {
+  margin: 0 0 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+.loadingTrack {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.loadingBar {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #7c5cff, #00e5c7);
+  transition: width 0.08s linear;
+}
+
 .keys {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -141,6 +177,11 @@
 .key:active {
   transform: translateY(3px);
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+}
+
+.key:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .fn {
