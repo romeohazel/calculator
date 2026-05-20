@@ -16,6 +16,7 @@ export function Calculator() {
   const [display, setDisplay] = useState("0");
   const [showPricing, setShowPricing] = useState(false);
   const [hasAccess, setHasAccess] = useState(false);
+  const [pulse, setPulse] = useState(false);
 
   useEffect(() => {
     fetch("/api/access")
@@ -68,6 +69,8 @@ export function Calculator() {
         if (data.result !== undefined) {
           setDisplay(data.result);
           setHasAccess(true);
+          setPulse(true);
+          setTimeout(() => setPulse(false), 600);
           return;
         }
 
@@ -95,14 +98,32 @@ export function Calculator() {
   );
 
   return (
-    <div className={styles.wrap}>
+    <div className={styles.shell}>
+      <div className={styles.glow} aria-hidden />
       <header className={styles.brand}>
-        <h1>Calculator</h1>
-        {hasAccess && <span className={styles.paid}>Unlocked</span>}
+        <div className={styles.logo}>
+          <span className={styles.logoMark}>∑</span>
+          <span className={styles.logoText}>Calc</span>
+        </div>
+        {hasAccess ? (
+          <span className={styles.paid}>
+            <span className={styles.paidDot} />
+            Unlocked
+          </span>
+        ) : (
+          <span className={styles.locked}>Pay to solve</span>
+        )}
       </header>
 
-      <div className={styles.display} aria-live="polite">
-        {display}
+      <div
+        className={`${styles.displayPanel} ${pulse ? styles.displayPulse : ""} ${!hasAccess ? styles.displayLocked : ""}`}
+      >
+        <p className={styles.displayHint}>
+          {hasAccess ? "Premium answers enabled" : "Answers require subscription"}
+        </p>
+        <div className={styles.display} aria-live="polite">
+          {display}
+        </div>
       </div>
 
       <div className={styles.keys}>
@@ -124,13 +145,11 @@ export function Calculator() {
                 .join(" ")}
               onClick={() => handleKey(key)}
             >
-              {key}
+              <span className={styles.keyInner}>{key}</span>
             </button>
           );
         })}
       </div>
-
-      {showPricing && <PricingModal onClose={() => setShowPricing(false)} />}
     </div>
   );
 }

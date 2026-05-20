@@ -6,28 +6,41 @@
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
-  background: rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(6px);
+  background: rgba(5, 5, 8, 0.75);
+  backdrop-filter: blur(12px);
 }
 
 .panel {
   width: 100%;
   max-width: 520px;
-  background: #1a1d27;
-  border: 1px solid #2a2f3d;
-  border-radius: 16px;
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.09) 0%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
   padding: 1.75rem;
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+  box-shadow:
+    0 32px 80px rgba(0, 0, 0, 0.6),
+    0 0 60px rgba(124, 92, 255, 0.15);
+  backdrop-filter: blur(20px);
 }
 
 .header h2 {
   margin: 0 0 0.35rem;
-  font-size: 1.35rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  background: linear-gradient(90deg, #f4f2ff, #c4b5fd);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .header p {
   margin: 0 0 1.25rem;
-  color: #9aa3b2;
+  color: var(--text-muted);
   font-size: 0.95rem;
 }
 
@@ -39,67 +52,90 @@
 
 .plan {
   position: relative;
-  border: 1px solid #2a2f3d;
-  border-radius: 12px;
-  padding: 1.1rem 1.15rem;
-  background: #14171f;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1.15rem 1.2rem;
+  background: rgba(0, 0, 0, 0.25);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.plan:hover {
+  transform: translateY(-2px);
 }
 
 .plan h3 {
   margin: 0 0 0.25rem;
   font-size: 1rem;
+  font-weight: 600;
 }
 
 .featured {
-  border-color: #4f7df5;
-  background: linear-gradient(180deg, #1a2238 0%, #14171f 100%);
+  border-color: rgba(124, 92, 255, 0.5);
+  background: linear-gradient(
+    160deg,
+    rgba(124, 92, 255, 0.15) 0%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  box-shadow: 0 0 40px rgba(124, 92, 255, 0.12);
 }
 
 .badge {
   position: absolute;
   top: -0.55rem;
   right: 1rem;
-  font-size: 0.7rem;
-  font-weight: 600;
+  font-size: 0.65rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  background: #4f7df5;
+  letter-spacing: 0.06em;
+  background: linear-gradient(135deg, #7c5cff, #ff4ecd);
   color: #fff;
-  padding: 0.2rem 0.5rem;
-  border-radius: 6px;
+  padding: 0.25rem 0.55rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(124, 92, 255, 0.4);
 }
 
 .price {
   margin: 0 0 0.35rem;
-  font-size: 1.6rem;
+  font-size: 1.75rem;
   font-weight: 700;
+  letter-spacing: -0.03em;
 }
 
 .price span {
   font-size: 0.9rem;
-  font-weight: 400;
-  color: #9aa3b2;
+  font-weight: 500;
+  color: var(--text-muted);
 }
 
 .desc {
-  margin: 0 0 0.85rem;
+  margin: 0 0 0.9rem;
   font-size: 0.85rem;
-  color: #9aa3b2;
+  color: var(--text-muted);
+  line-height: 1.45;
 }
 
 .plan button {
   width: 100%;
   border: none;
-  border-radius: 10px;
-  padding: 0.7rem 1rem;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
   font-weight: 600;
-  background: #4f7df5;
+  background: linear-gradient(135deg, #7c5cff, #6b4fd9);
   color: #fff;
+  box-shadow: 0 4px 20px rgba(124, 92, 255, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.plan button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(124, 92, 255, 0.45);
 }
 
 .secondary {
-  background: #2a3142 !important;
-  color: #e8eaef !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: var(--text) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: none !important;
 }
 
 .plan button:disabled {
@@ -109,7 +145,7 @@
 
 .error {
   margin: 0.75rem 0 0;
-  color: #f87171;
+  color: #ff6b8a;
   font-size: 0.85rem;
   text-align: center;
 }
@@ -119,13 +155,14 @@
   margin: 1rem auto 0;
   background: none;
   border: none;
-  color: #9aa3b2;
+  color: var(--text-muted);
   font-size: 0.85rem;
   width: auto;
   padding: 0.25rem;
   cursor: pointer;
+  transition: color 0.15s ease;
 }
 
 .dismiss:hover {
-  color: #e8eaef;
+  color: var(--text);
 }
